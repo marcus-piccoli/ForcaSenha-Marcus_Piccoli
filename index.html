@@ -67,6 +67,7 @@
     <div id="caixaSenha">
         <p style="color: white;" class="texto">Nova senha:</p>
         <input type="password" id="senhaInput" oninput="verificarForca()" />
+        <button id="mostrarSenha" onclick="mudarTexto()">Show</button>
         <p id="forcaTexto"></p>
         <div id="forcaSenha"></div>
     </div>
@@ -105,14 +106,17 @@
            forcaSenha.style.width = (forca * 10) + '%'
        }
 
-       function visibilidadeSenha() { //tentativa de deixar estilo senha do windows
-           var senhaInput = document.getElementById('senhaInput');
-           if (senhaInput.type === "password") {
-               senhaInput.type = "text";
-           } else {
-               senhaInput.type = "password";
-           }
-       }
+       function mudarTexto() {
+            var botao = document.getElementById("mostrarSenha");
+            
+            if (botao.innerHTML === "Show") {
+                botao.innerHTML = "Hide"
+                senhaInput.type = "text"
+            } else {
+                botao.innerHTML = "Show"
+                senhaInput.type = "password"
+            }
+        }
    </script>
 </body>
 </html>
