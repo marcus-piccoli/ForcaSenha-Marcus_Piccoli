@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador de Força de Senha</title>
+    
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #333;
+        }
+        #caixaSenha {
+            background-color: #666;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #forcaSenha {
+            height: 2px;
+            transition: width 0.5s, background-color 0.5s;
+        }
+
+        .texto{
+            color: rgb(255, 255, 255);
+            text-shadow: 0 0 10px rgb(255, 255, 255), 0 0 20px rgb(255, 255, 255), 0 0 30px rgb(255, 255, 255), 0 0 40px rgb(255, 255, 255);
+        }
+
+        .textoFraco {
+            color: rgb(80, 0, 0);
+            text-shadow: 0 0 10px red, 0 0 20px red, 0 0 30px red, 0 0 40px red;
+        }
+        .textoModerado {
+            color: yellow;
+            text-shadow: 0 0 10px yellow, 0 0 20px yellow, 0 0 30px yellow, 0 0 40px yellow;
+        }
+        .textoForte {
+            color: rgb(0, 65, 0);
+            text-shadow: 0 0 10px rgb(0, 255, 0), 0 0 20px rgb(0, 255, 0), 0 0 30px rgb(0, 255, 0), 0 0 40px rgb(0, 255, 0);
+        }
+
+        .barrafraca {
+            background-color: rgb(80, 0, 0);
+            box-shadow: 0 0 10px red, 0 0 20px red, 0 0 30px red, 0 0 40px red;
+        }
+
+        .barramoderada {
+            background-color: yellow;
+            box-shadow: 0 0 10px yellow, 0 0 20px yellow, 0 0 30px yellow, 0 0 40px yellow;
+        }
+
+        .barraforte {
+            background-color: rgb(0, 65, 0);
+            box-shadow: 0 0 10px rgb(0, 255, 0), 0 0 20px rgb(0, 255, 0), 0 0 30px rgb(0, 255, 0), 0 0 40px rgb(0, 255, 0);
+        } /* precisa de todos estes shadows ou tem uma forma mais limpa de fazer? */
+    </style>
+</head>
+<body>
+    <div id="caixaSenha">
+        <p style="color: white;" class="texto">Nova senha:</p>
+        <input type="password" id="senhaInput" oninput="verificarForca()" />
+        <p id="forcaTexto"></p>
+        <div id="forcaSenha"></div>
+    </div>
+
+    <script>
+        function verificarForca() {
+            var senha = document.getElementById('senhaInput').value
+            var forcaTexto = document.getElementById('forcaTexto')
+            var forcaSenha = document.getElementById('forcaSenha')
+            var forca = 0
+
+            if (senha.length > 1) forca++
+            if (senha.length > 6) forca++
+            if (senha.length >= 10) forca++
+            if (senha.length >= 12) forca++
+            if (senha.length >= 14) forca++
+            if (/\d/.test(senha)) forca++
+            if (/[A-Z]/.test(senha)) forca++
+            if (/[a-z]/.test(senha)) forca++
+            if (/[^a-zA-Z0-9]/.test(senha)) forca +=2
+
+            if (forca >=9) {
+                forcaTexto.innerText = "Senha Forte"
+                forcaSenha.className = "barraforte"
+                forcaTexto.className = "textoForte"
+            } else if (forca >5) {
+                forcaTexto.innerText = "Senha Moderada"
+                forcaSenha.className = "barramoderada"
+                forcaTexto.className = "textoModerado"
+            } else {
+                forcaTexto.innerText = "Senha Fraca"
+                forcaSenha.className = "barrafraca"
+                forcaTexto.className = "textoFraco"
+            }
+            //tem alguma maneira de usar menos if?
+           forcaSenha.style.width = (forca * 10) + '%'
+       }
+
+       function visibilidadeSenha() { //tentativa de deixar estilo senha do windows
+           var senhaInput = document.getElementById('senhaInput');
+           if (senhaInput.type === "password") {
+               senhaInput.type = "text";
+           } else {
+               senhaInput.type = "password";
+           }
+       }
+   </script>
+</body>
+</html>
